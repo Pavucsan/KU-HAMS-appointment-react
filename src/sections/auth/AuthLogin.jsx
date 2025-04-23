@@ -75,6 +75,7 @@ export default function AuthLogin({ isDemo = false }) {
 
     console.log('Login success:', data);
     localStorage.setItem('authToken', data.token);
+    localStorage.setItem('userName', data.user?.name || data.userName || email); // save user's name
     navigate('/public/sample-page');  // Redirect after successful login
 
   } catch (error) {
@@ -96,8 +97,8 @@ export default function AuthLogin({ isDemo = false }) {
       </Snackbar>
       <Formik
         initialValues={{
-          email: 'info@codedthemes.com',
-          password: '123456',
+          email: 'Pavucsan',
+          password: 'secret123',
           submit: null
         }}
         validationSchema={Yup.object().shape({

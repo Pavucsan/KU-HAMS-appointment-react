@@ -1,33 +1,107 @@
-// material-ui
-import FormControl from '@mui/material/FormControl';
-import InputAdornment from '@mui/material/InputAdornment';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import Box from '@mui/material/Box';
-
-// assets
+import React, { useState, useEffect, useRef } from 'react';
+import {
+  FormControl,
+  InputAdornment,
+  OutlinedInput,
+  Box,
+  Paper,
+  List,
+  ListItem,
+  ListItemText,
+  Popper
+} from '@mui/material';
 import SearchOutlined from '@ant-design/icons/SearchOutlined';
 
-// ==============================|| HEADER CONTENT - SEARCH ||============================== //
-
 export default function Search() {
+  const [searchText, setSearchText] = useState('');
+  const [results, setResults] = useState([]);
+  const [open, setOpen] = useState(false);
+  const inputRef = useRef(null);
+
+  const handleSearch = async (query) => {
+    const token = localStorage.getItem('authToken');
+    console.log('Sending request with token:', token);
+
+    if (!query) {
+      setResults([]);
+      setOpen(false);
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `http://localhost:8082/api/doctors/key/search?keyword=${encodeURIComponent(query)}`,
+        {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error('Search failed');
+      }
+
+      const data = await response.json();
+      setResults(data.slice(0, 5));
+      setOpen(true);
+    } catch (error) {
+      console.error('Search failed:', error);
+      setOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    const delay = setTimeout(() => handleSearch(searchText), 300);
+    return () => clearTimeout(delay);
+  }, [searchText]);
+
+  const handleSelect = (name) => {
+    setSearchText(name);
+    setOpen(false);
+  };
+
   return (
-    <Box sx={{ width: '100%', ml: { xs: 0, md: 1 } }}>
+    <Box sx={{ width: '100%', ml: { xs: 0, md: 1 }, position: 'relative' }}>
       <FormControl sx={{ width: { xs: '100%', md: 224 } }}>
         <OutlinedInput
           size="small"
           id="header-search"
+          inputRef={inputRef}
           startAdornment={
             <InputAdornment position="start" sx={{ mr: -0.5 }}>
               <SearchOutlined />
             </InputAdornment>
           }
-          aria-describedby="header-search-text"
+          placeholder="Find Doctors by name, specialty, or condition"
+          value={searchText}
+          onChange={(e) => setSearchText(e.target.value)}
           inputProps={{
-            'aria-label': 'weight'
+            'aria-label': 'search-doctor'
           }}
-          placeholder="Ctrl + K"
         />
       </FormControl>
+
+      <Popper open={open} anchorEl={inputRef.current} style={{ zIndex: 1300 }}>
+        <Paper elevation={3} sx={{ width: 224 }}>
+          <List dense>
+            {results.map((doctor, index) => (
+              <ListItem
+                button
+                key={doctor.id || index}
+                onClick={() => handleSelect(doctor.fullName)}
+              >
+                <ListItemText
+                  primary={doctor.fullName}
+                  secondary={doctor.specialization}
+                />
+              </ListItem>
+            ))}
+          </List>
+        </Paper>
+      </Popper>
     </Box>
   );
 }
