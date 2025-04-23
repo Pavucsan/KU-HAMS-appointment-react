@@ -29,10 +29,18 @@ import AnimateButton from 'components/@extended/AnimateButton';
 import EyeOutlined from '@ant-design/icons/EyeOutlined';
 import EyeInvisibleOutlined from '@ant-design/icons/EyeInvisibleOutlined';
 
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
+
+
 // ============================|| JWT - LOGIN ||============================ //
 
 export default function AuthLogin({ isDemo = false }) {
   const [checked, setChecked] = React.useState(false);
+  const [openSnackbar, setOpenSnackbar] = React.useState(false);
+  const [snackbarMessage, setSnackbarMessage] = React.useState('');
+
+
   const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = React.useState(false);
@@ -61,11 +69,13 @@ export default function AuthLogin({ isDemo = false }) {
     const data = await response.json();
 
     if (!response.ok) {
-      throw new Error(data.message || 'Login failed');
+      const errorData = await response.json();  // Get error message from server
+      throw new Error(errorData.message || 'Login failed');
     }
 
     console.log('Login success:', data);
     localStorage.setItem('authToken', data.token);
+    navigate('/public/sample-page');  // Redirect after successful login
 
   } catch (error) {
     console.error('Login error:', error);
@@ -74,6 +84,16 @@ export default function AuthLogin({ isDemo = false }) {
 
   return (
     <>
+    <Snackbar
+        open={openSnackbar}
+        autoHideDuration={4000}
+        onClose={() => setOpenSnackbar(false)}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <MuiAlert onClose={() => setOpenSnackbar(false)} severity="error" variant="filled" sx={{ width: '100%' }}>
+          {snackbarMessage}
+        </MuiAlert>
+      </Snackbar>
       <Formik
         initialValues={{
           email: 'info@codedthemes.com',
@@ -81,32 +101,41 @@ export default function AuthLogin({ isDemo = false }) {
           submit: null
         }}
         validationSchema={Yup.object().shape({
-          email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
+          email: Yup.string().max(255).required('user Name is required'),
           password: Yup.string()
             .required('Password is required')
             .test('no-leading-trailing-whitespace', 'Password cannot start or end with spaces', (value) => value === value.trim())
             .max(10, 'Password must be less than 10 characters')
         })}
-        submit={(values, { setErrors, setStatus, setSubmitting }) => {
+        onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
             if (isDemo) {
               setStatus({ success: false });
               setSubmitting(false);
             } else {
-              handleLogin(values.email, values.password);
-              navigate('/public/sample-page');
+              const success = await handleLogin(values.email, values.password);
+              if (success) {
+                navigate('/public/sample-page');
+              } else {
+                setSnackbarMessage('Login failed: Invalid credentials or access denied.');
+                setOpenSnackbar(true);
+                setStatus({ success: false });
+              }
+              setSubmitting(false);
             }
           } catch (err) {
             console.error(err);
             setStatus({ success: false });
             setErrors({ submit: err.message });
+            setSnackbarMessage('Something went wrong during login.');
+            setOpenSnackbar(true);
             setSubmitting(false);
           }
         }}
         validateOnChange={false}
       >
-        {({ errors, handleBlur, handleChange, touched, values }) => (
-          <form noValidate>
+        {({ errors, handleBlur, handleChange, touched, values, handleSubmit }) => (
+          <form noValidate onSubmit={handleSubmit}>
             <Grid container spacing={3}>
               <Grid size={12}>
                 <Stack sx={{ gap: 1 }}>
@@ -184,7 +213,7 @@ export default function AuthLogin({ isDemo = false }) {
               </Grid>
               <Grid size={12}>
                 <AnimateButton>
-                  <Button fullWidth size="large" variant="contained" color="primary">
+                  <Button fullWidth size="large" variant="contained" color="primary" type="submit">
                     Login
                   </Button>
                 </AnimateButton>
@@ -193,6 +222,16 @@ export default function AuthLogin({ isDemo = false }) {
           </form>
         )}
       </Formik>
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={4000}
+        onClose={() => setOpenSnackbar(false)}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <MuiAlert onClose={() => setOpenSnackbar(false)} severity="error" variant="filled" sx={{ width: '100%' }}>
+          {snackbarMessage}
+        </MuiAlert>
+      </Snackbar>
     </>
   );
 }
