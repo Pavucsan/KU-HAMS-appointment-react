@@ -3,6 +3,7 @@ import { lazy } from 'react';
 // project imports
 import Loadable from 'components/Loadable';
 import PublicLayout from 'layout/Public';
+import AppointmentPage from '../pages/extra-pages/appointment';
 
 // render- Dashboard
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard/default')));
@@ -13,7 +14,7 @@ const Typography = Loadable(lazy(() => import('pages/component-overview/typograp
 const Shadow = Loadable(lazy(() => import('pages/component-overview/shadows')));
 
 // render - sample page
-const SamplePage = Loadable(lazy(() => import('pages/extra-pages/sample-page')));
+const SamplePage = Loadable(lazy(() => import('pages/extra-pages/appointment')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -47,8 +48,8 @@ const PublicRoutes = {
       element: <Shadow />
     },
     {
-      path: '/public/sample-page',
-      element: <SamplePage />
+      path: '/public/appointment',
+      element: <AppointmentPage />
     }
   ]
 };

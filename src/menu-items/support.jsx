@@ -15,10 +15,10 @@ const support = {
   type: 'group',
   children: [
     {
-      id: 'sample-page',
-      title: 'Sample Page',
+      id: 'appointment',
+      title: 'Appointment',
       type: 'item',
-      url: '/sample-page',
+      url: '/appointment',
       icon: icons.ChromeOutlined
     },
     {

@@ -76,7 +76,7 @@ export default function AuthLogin({ isDemo = false }) {
     console.log('Login success:', data);
     localStorage.setItem('authToken', data.token);
     localStorage.setItem('userName', data.user?.name || data.userName || email); // save user's name
-    navigate('/public/sample-page');  // Redirect after successful login
+    navigate('/public/appointment');  // Redirect after successful login
 
   } catch (error) {
     console.error('Login error:', error);
@@ -116,7 +116,7 @@ export default function AuthLogin({ isDemo = false }) {
             } else {
               const success = await handleLogin(values.email, values.password);
               if (success) {
-                navigate('/public/sample-page');
+                navigate('/public/appointment'); // Redirect after successful login
               } else {
                 setSnackbarMessage('Login failed: Invalid credentials or access denied.');
                 setOpenSnackbar(true);
