@@ -51,8 +51,8 @@ src/
 ### 📥 Installation
 
 ```bash
-git clone https://github.com/your-username/doctor-appointment-frontend.git
-cd doctor-appointment-frontend
+git clone https://github.com/Pavucsan/KU-HAMS-appointment-react.git
+cd appointment-react
 npm install
 ```
 ### App Start
