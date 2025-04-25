@@ -1,19 +1,62 @@
-# Doctor Appointment Frontend
+# 🩺 Doctor Appointment Frontend
 
-This is the **Frontend** for the Doctor Appointment Web Application. It allows users to search for doctors, view doctor details, and book appointments. The application is built using **React**, **React Router**, **Material UI**, and follows modern frontend development practices.
-
----
-
-## 🔧 Technologies Used
-
-- React
-- React Router
-- Material UI (MUI)
-- Ant Design Icons
-- Fetch API for HTTP requests
-- LocalStorage for token handling
+This is the frontend application for the **Doctor Appointment System**, built with **React.js** and **Material UI (MUI)**. It allows users to search for doctors, view their details, and schedule appointments.
 
 ---
 
-## 📁 Project Structure
-src/ │ ├── components/ # Reusable UI components ├── layout/ # Layout components (Public layout, etc.) ├── pages/ # Page components │ └── extra-pages/ │ ├── DoctorDetail.jsx # Doctor profile detail page │ └── appointment.jsx # Appointment booking page ├── routes/ # Application route configurations ├── App.js # Main app component ├── index.js # Entry point
+## 📦 Features
+
+- 🔍 **Search Doctors** by name, specialization, or medical condition.
+- 📄 **Doctor Detail Page** to view qualifications and specialization.
+- 📆 **Book Appointments** with available doctors.
+- 🔐 **Token-based Authentication** for secure access.
+- 🖥️ Responsive design using **Material UI**.
+
+---
+
+## 🛠️ Tech Stack
+
+- **React.js**
+- **React Router DOM**
+- **Material UI**
+- **Ant Design Icons**
+- **Fetch API** for HTTP communication
+
+---
+
+## 🚀 Getting Started
+
+Follow these steps to run the frontend locally:
+
+### ✅ Prerequisites
+
+- Node.js >= 14.x
+- npm >= 6.x
+- Backend running on `http://localhost:8082` (or update API URL in `.env`)
+
+### Project Structure
+```
+src/
+│
+├── components/          # Reusable UI components
+├── layout/              # Layout wrappers (e.g., PublicLayout)
+├── pages/               # Page-specific components
+│   └── extra-pages/     # Extra pages like Appointment & DoctorDetail
+├── routes/              # Application routes
+├── App.js               # Main app entry
+└── index.js             # React DOM render entry
+```
+---
+
+### 📥 Installation
+
+```bash
+git clone https://github.com/your-username/doctor-appointment-frontend.git
+cd doctor-appointment-frontend
+npm install
+```
+### App Start
+
+```bash
+npm start
+```
