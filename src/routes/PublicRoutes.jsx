@@ -4,6 +4,7 @@ import { lazy } from 'react';
 import Loadable from 'components/Loadable';
 import PublicLayout from 'layout/Public';
 import AppointmentPage from '../pages/extra-pages/appointment';
+import DoctorDetailPage from '../pages/extra-pages/DoctorDetail';
 
 // render- Dashboard
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard/default')));
@@ -50,6 +51,10 @@ const PublicRoutes = {
     {
       path: '/public/appointment',
       element: <AppointmentPage />
+    },
+    {
+      path: '/doctors/:id',
+      element: <DoctorDetailPage />
     }
   ]
 };

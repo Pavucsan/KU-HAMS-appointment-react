@@ -58,8 +58,9 @@ export default function Search() {
     return () => clearTimeout(delay);
   }, [searchText]);
 
-  const handleSelect = (name) => {
-    setSearchText(name);
+  const handleSelect = (doctor) => {
+    setSearchText(doctor.fullName);
+    navigate(`/public/doctors/${doctor.id}`);
     setOpen(false);
   };
 
@@ -91,7 +92,7 @@ export default function Search() {
               <ListItem
                 button
                 key={doctor.id || index}
-                onClick={() => handleSelect(doctor.fullName)}
+                onClick={() => handleSelect(doctor)}
               >
                 <ListItemText
                   primary={doctor.fullName}
