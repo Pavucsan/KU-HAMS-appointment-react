@@ -5,6 +5,8 @@ import Loadable from 'components/Loadable';
 import PublicLayout from 'layout/Public';
 import AppointmentPage from '../pages/extra-pages/appointment';
 import DoctorDetailPage from '../pages/extra-pages/DoctorDetail';
+import AppointmentHistoryPage from '../pages/extra-pages/AppointmentsHistory';
+import BookAppointmentPage from '../pages/extra-pages/BookAppointment';
 
 // render- Dashboard
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard/default')));
@@ -15,7 +17,7 @@ const Typography = Loadable(lazy(() => import('pages/component-overview/typograp
 const Shadow = Loadable(lazy(() => import('pages/component-overview/shadows')));
 
 // render - sample page
-const SamplePage = Loadable(lazy(() => import('pages/extra-pages/appointment')));
+// const SamplePage = Loadable(lazy(() => import('pages/extra-pages/appointment')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -51,12 +53,21 @@ const PublicRoutes = {
     {
       path: '/public/appointment',
       element: <AppointmentPage />
+    }
+    ,
+    {
+      path: '/public/doctors/:id',
+      element: <DoctorDetailPage />
+    }
+    ,
+    {
+      path: '/public/appointment/history',
+      element: <AppointmentHistoryPage />
     },
     {
-      path: '/doctors/:id',
-      element: <DoctorDetailPage />
+      path: '/public/appointment/book/:doctorId',
+      element: <BookAppointmentPage />
     }
   ]
 };
-
 export default PublicRoutes;

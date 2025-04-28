@@ -50,7 +50,7 @@ function a11yProps(index) {
 const handleLogout = () => {
   console.log("Logging out..."); // Debug line
   localStorage.clear();
-  window.location.href = 'http://localhost:3001/login';
+  window.location.href = '/login';
 };
 
 // ==============================|| HEADER CONTENT - PROFILE ||============================== //

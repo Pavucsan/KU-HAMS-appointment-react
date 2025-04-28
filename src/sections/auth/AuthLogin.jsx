@@ -76,6 +76,7 @@ export default function AuthLogin({ isDemo = false }) {
     console.log('Login success:', data);
     localStorage.setItem('authToken', data.token);
     localStorage.setItem('userName', data.user?.name || data.userName || email); // save user's name
+    localStorage.setItem('patientId', data.user?.patientId || data.patientId || 0); // save user's name
     navigate('/public/appointment');  // Redirect after successful login
 
   } catch (error) {

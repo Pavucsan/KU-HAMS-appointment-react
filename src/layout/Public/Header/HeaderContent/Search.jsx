@@ -8,15 +8,19 @@ import {
   List,
   ListItem,
   ListItemText,
-  Popper
+  Popper,
+  Button
 } from '@mui/material';
 import SearchOutlined from '@ant-design/icons/SearchOutlined';
+import { useNavigate } from 'react-router';
 
 export default function Search() {
   const [searchText, setSearchText] = useState('');
   const [results, setResults] = useState([]);
   const [open, setOpen] = useState(false);
+  const [drClick, setDrClick] = useState(false);
   const inputRef = useRef(null);
+  const navigate = useNavigate();
 
   const handleSearch = async (query) => {
     const token = localStorage.getItem('authToken');
@@ -59,13 +63,33 @@ export default function Search() {
   }, [searchText]);
 
   const handleSelect = (doctor) => {
-    setSearchText(doctor.fullName);
-    navigate(`/public/doctors/${doctor.id}`);
+    console.log('Selected doctor:', doctor);
+    if (doctor) {
+      setSearchText(doctor.fullName);
+      navigate(`/public/doctors/${doctor.id}`);
+      setOpen(false);
+      setDrClick(true);
+    }
+  };
+
+  const openApplication = () => {
+    navigate(`/public/appointment`);
+    setSearchText('');
+    setResults([]);
     setOpen(false);
+    setDrClick(false);
+  };
+
+  const goHome = () => {
+    navigate('/public/appointment'); // Navigate to home page
+    setSearchText('');
+    setResults([]);
+    setOpen(false);
+    setDrClick(false);
   };
 
   return (
-    <Box sx={{ width: '100%', ml: { xs: 0, md: 1 }, position: 'relative' }}>
+    <Box sx={{ width: '100%', ml: { xs: 0, md: 1 }, position: 'relative', display: 'flex', alignItems: 'center', gap: 1 }}>
       <FormControl sx={{ width: { xs: '100%', md: 224 } }}>
         <OutlinedInput
           size="small"
@@ -78,12 +102,23 @@ export default function Search() {
           }
           placeholder="Find Doctors by name, specialty, or condition"
           value={searchText}
-          onChange={(e) => setSearchText(e.target.value)}
+          onChange={(e) => {
+            if (!e.target.value) {
+              openApplication();
+            } else {
+              setSearchText(e.target.value);
+            }
+          }}
           inputProps={{
             'aria-label': 'search-doctor'
           }}
         />
       </FormControl>
+
+      {/* Home Button */}
+      <Button variant="contained" color="warning" onClick={goHome} size="small">
+        Home
+      </Button>
 
       <Popper open={open} anchorEl={inputRef.current} style={{ zIndex: 1300 }}>
         <Paper elevation={3} sx={{ width: 224 }}>

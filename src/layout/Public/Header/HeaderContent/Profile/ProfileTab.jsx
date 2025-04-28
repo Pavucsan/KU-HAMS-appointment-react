@@ -16,14 +16,20 @@ import { HistoryOutlined } from '@ant-design/icons';
 
 // ==============================|| HEADER PROFILE - PROFILE TAB ||============================== //
 
+
 export default function ProfileTab() {
   const handleLogout = () => {
     localStorage.clear(); // Or remove specific keys
-    window.location.href = 'http://localhost:3001/login'; // Redirect
+    window.location.href = '/login'; // Redirect
   };
+
+  const opentAppointments = () => {
+    window.location.href = '/public/appointment/history'; // Redirect to appointments page
+  };
+
   return (
     <List component="nav" sx={{ p: 0, '& .MuiListItemIcon-root': { minWidth: 32 } }}>
-      <ListItemButton>
+      <ListItemButton onClick={opentAppointments}>
         <ListItemIcon>
           <HistoryOutlined />
         </ListItemIcon>

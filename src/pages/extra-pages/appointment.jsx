@@ -14,7 +14,14 @@ import MainCard from 'components/MainCard';
 // assets
 import defaultImage from 'assets/images/female.png';
 
-// card for each doctor
+// ------------- Scheduler Function --------------
+const schedulerAppointment = (doctor) => {
+  console.log("Scheduling appointment with doctor:", doctor);
+  const doctorId = doctor.id;
+  window.location.href = `/public/appointment/book/${doctorId}`;
+};
+
+// ------------- DoctorCard Component --------------
 const DoctorCard = ({ doctor }) => (
   <MainCard
     content={false}
@@ -33,15 +40,15 @@ const DoctorCard = ({ doctor }) => (
       <Typography variant="body2" sx={{ mb: 2 }}>
         {doctor.specialization}
       </Typography>
-      <Button variant="contained" color="primary" fullWidth>
-        Book
+      <Button variant="contained" color="primary" onClick={() => schedulerAppointment(doctor)} fullWidth>
+        Schedule Appointment
       </Button>
     </CardContent>
     <Divider />
   </MainCard>
 );
 
-// ==============================|| SAMPLE PAGE ||============================== //
+// ==============================|| MAIN PAGE ||============================== //
 
 export default function AppointmentPage() {
   const [doctors, setDoctors] = useState([]);
@@ -57,10 +64,10 @@ export default function AppointmentPage() {
       .then((response) => response.json())
       .then((data) => setDoctors(data))
       .catch((error) => console.error('Error fetching doctors:', error));
-  }, []);  
+  }, []);
 
   return (
-    <MainCard title="Available doctors">
+    <MainCard title="Available Doctors">
       <Box
         sx={{
           display: 'flex',
